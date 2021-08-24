@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "runner": "terminal",
+    "type": "shell",
+    "echoCommand": true,
+    "presentation": { "reveal": "always" },
+    "tasks": [
+        {
+            "label": "save and compile for C++",
+            "command": "g++",
+            "args": [
+                "-std=c++20",
+                "-g",
+                "-Wl,-stack_size -Wl,0x20000000",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "group": "build",
+            "problemMatcher": {
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "execute",
+            "command": "cmd",
+            "group": "test",
+            "args": [
+                "/C",
+                "${fileDirname}\\${fileBasenameNoExtension}"
+            ]
+        }
+    ]
+}
