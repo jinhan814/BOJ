@@ -6,4 +6,4 @@ BOJ handle : jinhan814 ([https://www.acmicpc.net/user/jinhan814](https://www.acm
 
 ## Info
 
-📝 BOJ solution code
+📝 BOJ solution code (since '21-08-25')
