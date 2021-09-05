@@ -2,7 +2,11 @@
 #define fastio cin.tie(0)->sync_with_stdio(0)
 using namespace std;
 
+#define all(v) (v).begin(), (v).end()
+#define compress(v) sort(all(v)), (v).erase(unique(all(v)), (v).end())
+
 int n, v[51][51];
+vector<int> I;
 
 struct SCC {
 	int n, scc_cnt, dfs_cnt;
@@ -37,7 +41,7 @@ struct SCC {
 bool Check(int l, int r) {
 	SCC S(n);
 	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) {
-		if (l <= v[i][j] && v[i][j] <= r) S.addEdge(i, j);
+		if (I[l] <= v[i][j] && v[i][j] <= I[r]) S.addEdge(i, j);
 	}
 	S.GetSCC();
 
@@ -49,17 +53,16 @@ bool Check(int l, int r) {
 int main() {
 	fastio;
 	cin >> n;
-	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) cin >> v[i][j];
+	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) {
+		cin >> v[i][j];
+		I.push_back(v[i][j]);
+	}
+	compress(I);
 
 	int mn = 1e9;
-	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) {
-		int lo = v[i][j] - 1, hi = 150'001;
-		while (lo + 1 < hi) {
-			int mid = lo + hi >> 1;
-			if (!Check(v[i][j], mid)) lo = mid;
-			else hi = mid;
-		}
-		if (hi != 150'001) mn = min(mn, hi - v[i][j]);
-	}
+    for (int l = 0, r = 0; l < I.size(); l++) {
+        while (r < I.size() && !Check(l, r)) r++;
+        if (r < I.size()) mn = min(mn, I[r] - I[l]);
+    }
 	cout << mn << '\n';
 }
