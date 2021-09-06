@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 #define fastio cin.tie(0)->sync_with_stdio(0)
-using namespace std;
+using namespace std; 
 
 #define int int64_t
 
