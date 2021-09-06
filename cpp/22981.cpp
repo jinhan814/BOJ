@@ -17,7 +17,7 @@ int32_t main() {
 		return (k + t1 + t2 - 1) / (t1 + t2);
 	};
 
-    int ans = int(1e18) + 7;
-    for (int i = 1; i < n; i++) ans = min(ans, Sol(i));
-    cout << ans << '\n';
+	int ans = int(1e18) + 7;
+	for (int i = 1; i < n; i++) ans = min(ans, Sol(i));
+	cout << ans << '\n';
 }
