@@ -23,7 +23,7 @@ int main() {
     	for (char c = *p++; c & 16; ret = 10 * ret + (c & 15), c = *p++);
     	return ret;
     };
-    
+
     UnionFind<1'000'001> UF;
     for (int q = ReadInt(); q--;) {
     	char c = *p++; p++;
