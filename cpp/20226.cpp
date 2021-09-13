@@ -4,6 +4,7 @@ using namespace std;
 
 using ll = int64_t;
 using ull = uint64_t;
+using pll = pair<ll, ll>;
 
 struct Random {
 	mt19937 rd;
@@ -73,8 +74,41 @@ struct PollardRho : public MillerRabin {
 	}
 } P;
 
+vector<pll> Compress(vector<ll> v) {
+	map<ll, ll> M;
+	for (auto& i : v) M[i]++;
+	return vector<pll>(M.begin(), M.end());
+}
+
+ll Sol(ll n) {
+	if (P.IsPrime(n)) return n + 2;
+
+	ll ret = n + 2;
+	vector<pll> v = Compress(P.Factorize(n));
+	vector<ll> div;
+
+	auto DFS = [&](int dep, ll cur, auto&& DFS) -> void {
+		if (dep == v.size()) { div.push_back(cur); return; }
+		for (ll i = 0, t = 1; i <= v[dep].second; i++) {
+			DFS(dep + 1, cur * t, DFS);
+			t *= v[dep].first;
+		}
+	};
+	DFS(0, 1, DFS);
+	sort(div.begin(), div.end());
+
+	for (int i = 0; i < div.size(); i++) {
+		auto it = lower_bound(div.begin(), div.end(), sqrt(div[i]));
+		for (auto j = it - 10; j <= it + 10; j++) {
+			if (j < div.begin() || j >= div.end()) continue;
+			if (div[i] % *j) continue;
+			ret = min(ret, n / div[i] + div[i] / *j + *j);
+		}
+	}
+	return ret;
+}
+
 int main() {
 	fastio;
-    ll n; cin >> n;
-    for (auto& i : P.Factorize(n)) cout << i << '\n';
+	for (ll n; cin >> n && n; cout << Sol(n) << '\n');
 }
