@@ -3,8 +3,7 @@
 using namespace std;
 
 using ll = int64_t;
-using i128 = __int128;
-using pll = pair<ll, ll>;
+using ull = uint64_t;
 
 struct Random {
 	mt19937 rd;
@@ -19,7 +18,10 @@ struct Random {
 } Rand;
 
 struct MillerRabin {
-	ll Mul(ll x, ll y, ll MOD) { return (i128)x * y % MOD; }
+	ll Mul(ll x, ll y, ll MOD) {
+		ll ret = x * y - MOD * ull(1.L / MOD * x * y);
+		return ret + MOD * (ret < 0) - MOD * (ret >= (ll)MOD);
+	}
 	ll _pow(ll x, ll n, ll MOD) {
 		ll ret = 1; x %= MOD;
 		for (; n; n >>= 1) {
@@ -62,15 +64,15 @@ struct PollardRho : public MillerRabin {
 		Rec(g, v); Rec(n / g, v);
 	}
 	vector<ll> Factorize(ll n) {
-        if (n == 1) return { 1 };
+		if (n == 1) return { 1 };
 		vector<ll> ret; Rec(n, ret);
 		sort(ret.begin(), ret.end());
 		return ret;
 	}
-};
+} P;
 
 int main() {
 	fastio;
-    ll n; cin >> n; PollardRho P;
+    ll n; cin >> n;
     for (auto& i : P.Factorize(n)) cout << i << '\n';
 }
