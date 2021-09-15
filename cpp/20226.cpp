@@ -41,12 +41,18 @@ struct MillerRabin {
 		}
 	}
 	bool IsPrime(ll x) {
-		if (x < 2 || x % 6 % 4 != 1) return (x | 1) == 3;
-		for (auto& i : { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 }) {
+		if (x == 2 || x == 3 || x == 5 || x == 7) return 1;
+		if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return 0;
+		if (x < 121) return x > 1;
+		if (x < 1ULL << 32) for (auto& i : { 2, 7, 61 }) {
 			if (x == i) return 1;
-			if (x > 40 && Check(x, i)) return 0;
+			if (x > i && Check(x, i)) return 0;
 		}
-		return x > 40;
+		else for (auto& i : { 2, 325, 9375, 28178, 450775, 9780504, 1795265022 }) {
+			if (x == i) return 1;
+			if (x > i && Check(x, i)) return 0;
+		}
+		return 1;
 	}
 };
 
@@ -67,7 +73,6 @@ struct PollardRho : public MillerRabin {
 		Rec(g, v); Rec(n / g, v);
 	}
 	vector<ll> Factorize(ll n) {
-		if (n == 1) return { 1 };
 		vector<ll> ret; Rec(n, ret);
 		sort(ret.begin(), ret.end());
 		return ret;
@@ -99,7 +104,7 @@ ll Sol(ll n) {
 
 	for (int i = 0; i < div.size(); i++) {
 		auto it = lower_bound(div.begin(), div.end(), sqrt(div[i]));
-		for (auto j = it - 10; j <= it + 10; j++) {
+		for (auto j = it - 3; j <= it + 3; j++) {
 			if (j < div.begin() || j >= div.end()) continue;
 			if (div[i] % *j) continue;
 			ret = min(ret, n / div[i] + div[i] / *j + *j);
