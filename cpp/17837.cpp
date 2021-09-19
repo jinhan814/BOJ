@@ -37,7 +37,7 @@ struct Board {
 		return x < 0 || x >= n || y < 0 || y >= n;
 	}
 
-	Piece GetNdir(int idx) {
+	Piece GetNxt(int idx) {
 		auto [x, y, d] = piece[idx];
 		int nx = x + "1012"[d] - '1';
 		int ny = y + "2101"[d] - '1';
@@ -54,7 +54,7 @@ struct Board {
 
 	bool Move(int idx) {
 		auto [x, y, d] = piece[idx];
-		auto nxt = GetNdir(idx);
+		auto nxt = GetNxt(idx);
 		int pos = find(state[x][y].begin(), state[x][y].end(), idx) - state[x][y].begin();
 		int cnt = state[x][y].size() - pos;
 
