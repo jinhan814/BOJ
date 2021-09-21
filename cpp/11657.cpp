@@ -6,7 +6,7 @@ using namespace std;
 constexpr int INF = 0x3f3f3f3f3f3f3f3f;
 using pii = pair<int, int>;
 
-int n, m, cnt, dist[501], inqueue[501];
+int n, m, cnt, dist[501], inque[501];
 vector<pii> adj[501];
 
 int32_t main() {
@@ -18,15 +18,16 @@ int32_t main() {
 	}
 
 	memset(dist, 0x3f, sizeof dist);
+	memset(inque, -1, sizeof inque);
 	queue<int> Q;
-	dist[1] = 0; inqueue[1] = 1; Q.push(1);
+	dist[1] = 0; inque[1] = 0; Q.push(1);
 	for (; Q.size() && cnt < n; Q.size() && cnt++) {
 		for (int i = Q.size(); i --> 0;) {
-			auto cur = Q.front(); Q.pop(); inqueue[cur] = 0;
+			auto cur = Q.front(); Q.pop(); inque[cur] = -1;
 			for (const auto& [nxt, cost] : adj[cur]) {
 				if (dist[nxt] > dist[cur] + cost) {
 					dist[nxt] = dist[cur] + cost;
-					if (!inqueue[nxt]) Q.push(nxt), inqueue[nxt] = 1;
+					if (inque[nxt] != cnt) Q.push(nxt), inque[nxt] = cnt;
 				}
 			}
 		}
