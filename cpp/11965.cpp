@@ -14,7 +14,7 @@ int dist[1000][1000][2];
 
 enum { RED, PINK, ORANGE, BLUE, PURPLE };
 
-int BFS() {
+int Dijkstra() {
 	memset(dist, 0x3f, sizeof dist);
 	priority_queue<Info, vector<Info>, greater<Info>> PQ;
 	PQ.push({ dist[0][0][0] = 0, 0, 0, 0 });
@@ -45,5 +45,5 @@ int main() {
 	fastio;
 	cin >> n >> m;
 	for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) cin >> board[i][j];
-	cout << BFS() << '\n';
+	cout << Dijkstra() << '\n';
 }
