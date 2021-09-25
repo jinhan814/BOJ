@@ -19,8 +19,7 @@ int main() {
 
 	queue<pii> Q;
 	Q.push({ 0, 0 }); visited[0][0] = 1; check[0][0] = 1;
-	while (Q.size()) {
-		// visit and flip
+	while (Q.size()) { // visit and flip
 		auto [x, y] = Q.front(); Q.pop();
 		for (const auto& [nx, ny] : adj[x][y]) {
 			if (!check[nx][ny]) {
