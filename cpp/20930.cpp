@@ -3,9 +3,9 @@
 using namespace std;
 
 struct Info {
-    int a, b, idx;
+    int x, y, idx;
     bool operator< (const Info& i) const {
-        return b < i.b || b == i.b && a < i.a;
+        return x < i.x || x == i.x && y < i.y;
     }
 };
 
@@ -32,9 +32,13 @@ int main() {
         if (y1 > y2) swap(y1, y2);
 	}
     sort(v.begin(), v.end()), sort(w.begin(), w.end());
-    for (int i = 1; i < n; i++) {
-        if (v[i].a <= v[i - 1].b) UF.Union(v[i - 1].idx, v[i].idx);
-        if (w[i].a <= w[i - 1].b) UF.Union(w[i - 1].idx, w[i].idx);
+    for (int i = 0, j = 0; i < n; i = j) {
+        int t = v[i].y;
+        while (j < n && v[j].x <= t) UF.Union(v[i].idx, v[j].idx), t = max(t, v[j++].y);
+    }
+    for (int i = 0, j = 0; i < n; i = j) {
+        int t = w[i].y;
+        while (j < n && w[j].x <= t) UF.Union(w[i].idx, w[j].idx), t = max(t, w[j++].y);
     }
     while (q--) {
         int a, b; cin >> a >> b; --a, --b;
