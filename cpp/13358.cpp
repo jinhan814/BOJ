@@ -24,18 +24,23 @@ int Phi(int n) {
 	return ret;
 }
 
+bool Check(const int n, const int m) {
+	if (n > 4) return 1;
+	if (n == 4) return 262144 >= m;
+	if (n == 3) return 9 >= m;
+	return 2 >= m;
+}
+
 int Sol(const int n, const int m) {
 	if (m == 1) return 0;
-	if (gcd(n, m) == 1) return Pow(n, Sol(n, Phi(m)), m);
+	if (n == 1) return 1;
+	if (gcd(n, m) == 1) return Pow(n, Sol(n - 1, Phi(m)), m);
 	const int phi = Phi(m);
-	return Pow(n, Sol(n, phi) + phi, m);
+	return Pow(n, Sol(n - 1, phi) + Check(n, m) * phi, m);
 }
 
 int main() {
 	fastio;
-	int N; cin >> N;
-	while (N--) {
-		int n, m; cin >> n >> m;
-		cout << Sol(n, m) << '\n';
-	}
+	int n, m; cin >> n >> m;
+	cout << Sol(n, m) << '\n';
 }
